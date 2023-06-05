@@ -6,11 +6,10 @@ import { ADD_COMMENT } from '../../utils/mutations';
 
 import Auth from '../../utils/auth';
 
-const CommentForm = ({ thoughtId }) => {
+const CommentForm = ({ postId }) => {
   const [commentText, setCommentText] = useState('');
-  const [characterCount, setCharacterCount] = useState(0);
 
-  const [addComment, { error }] = useMutation(ADD_COMMENT);
+  const [addComment] = useMutation(ADD_COMMENT);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -18,7 +17,7 @@ const CommentForm = ({ thoughtId }) => {
     try {
       const { data } = await addComment({
         variables: {
-          thoughtId,
+          postId,
           commentText,
           commentAuthor: Auth.getProfile().data.username,
         },
@@ -35,24 +34,15 @@ const CommentForm = ({ thoughtId }) => {
 
     if (name === 'commentText' && value.length <= 280) {
       setCommentText(value);
-      setCharacterCount(value.length);
     }
   };
 
   return (
     <div>
-      <h4>What are your thoughts on this thought?</h4>
+      <h4>Add your comments on this post?</h4>
 
       {Auth.loggedIn() ? (
         <>
-          <p
-            className={`m-0 ${
-              characterCount === 280 || error ? 'text-danger' : ''
-            }`}
-          >
-            Character Count: {characterCount}/280
-            {error && <span className="ml-2">{error.message}</span>}
-          </p>
           <form
             className="flex-row justify-center justify-space-between-md align-center"
             onSubmit={handleFormSubmit}
@@ -77,7 +67,7 @@ const CommentForm = ({ thoughtId }) => {
         </>
       ) : (
         <p>
-          You need to be logged in to share your thoughts. Please{' '}
+          You need to be logged in to share your comments. Please{' '}
           <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
         </p>
       )}

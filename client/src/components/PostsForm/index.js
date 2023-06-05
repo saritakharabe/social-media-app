@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
-import { ADD_THOUGHT } from '../../utils/mutations';
-import { QUERY_THOUGHTS, QUERY_ME } from '../../utils/queries';
+import { ADD_POST } from '../../utils/mutations';
+import { QUERY_POSTS, QUERY_ME } from '../../utils/queries';
 
 import Auth from '../../utils/auth';
 
-const ThoughtForm = () => {
-  const [thoughtText, setThoughtText] = useState('');
+const PostForm = () => {
+  const [postMessage, setPostMessage] = useState('');
 
-  const [addThought, { error }] = useMutation(ADD_THOUGHT, {
-    update(cache, { data: { addThought } }) {
+  const [addPost, { error }] = useMutation(ADD_POST, {
+    update(cache, { data: { addPost } }) {
       try {
-        const { thoughts } = cache.readQuery({ query: QUERY_THOUGHTS });
+        const { posts } = cache.readQuery({ query: QUERY_POSTS });
 
         cache.writeQuery({
-          query: QUERY_THOUGHTS,
-          data: { thoughts: [addThought, ...thoughts] },
+          query: QUERY_POSTS,
+          data: { posts: [addPost, ...posts] },
         });
       } catch (e) {
         console.error(e);
@@ -27,7 +27,7 @@ const ThoughtForm = () => {
       const { me } = cache.readQuery({ query: QUERY_ME });
       cache.writeQuery({
         query: QUERY_ME,
-        data: { me: { ...me, thoughts: [...me.thoughts, addThought] } },
+        data: { me: { ...me, posts: [...me.posts, addPost] } },
       });
     },
   });
@@ -36,15 +36,16 @@ const ThoughtForm = () => {
     event.preventDefault();
 
     try {
-      const { data } = await addThought({
+      const { data } = await addPost({
         variables: {
-          thoughtText,
-          thoughtAuthor: Auth.getProfile().data.username,
+          postMessage,
+          postAuthor: Auth.getProfile().data.username,
         },
       });
 
-      setThoughtText('');
+      setPostMessage('');
     } catch (err) {
+      
       console.error(err);
     }
   };
@@ -52,14 +53,14 @@ const ThoughtForm = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    if (name === 'thoughtText' && value.length <= 280) {
-      setThoughtText(value);
+    if (name === 'postMessage' && value.length <= 280) {
+      setPostMessage(value);
     }
   };
 
   return (
     <div>
-      <h3>Add your thoughts or comments</h3>
+      <h3>Add your posts or comments</h3>
 
       {Auth.loggedIn() ? (
         <>
@@ -69,9 +70,9 @@ const ThoughtForm = () => {
           >
             <div className="col-12 col-lg-9">
               <textarea
-                name="thoughtText"
-                placeholder="Here's a new thought..."
-                value={thoughtText}
+                name="postMessage"
+                placeholder="Here's a new Post..."
+                value={postMessage}
                 className="form-input w-100"
                 style={{ lineHeight: '1.5', resize: 'vertical' }}
                 onChange={handleChange}
@@ -80,7 +81,7 @@ const ThoughtForm = () => {
 
             <div className="col-12 col-lg-3">
               <button className="btn btn-primary btn-block py-3" type="submit">
-                Add Thought
+                Add Post
               </button>
             </div>
             {error && (
@@ -100,4 +101,4 @@ const ThoughtForm = () => {
   );
 };
 
-export default ThoughtForm;
+export default PostForm;

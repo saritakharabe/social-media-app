@@ -23,5 +23,8 @@
   "homepage": "https://github.com/saritakharabe/social-media-app#readme",
   "devDependencies": {
     "concurrently": "^8.1.0"
+  },
+  "dependencies": {
+    "react-bootstrap-validation": "^0.1.11"
   }
 }
