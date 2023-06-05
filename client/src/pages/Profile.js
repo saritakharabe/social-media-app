@@ -22,17 +22,17 @@ const Profile = () => {
     return <Navigate to="/me" />;
   }
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  // if (!user?.username) {
-  //   return (
-  //     <h4>
-  //       You need to login or Signup
-  //     </h4>
-  //   );
-  // }
+  if (!user?.username) {
+    return (
+      <h4>
+        You need to login or Signup
+      </h4>
+    );
+  }
 
   return (
     <div>

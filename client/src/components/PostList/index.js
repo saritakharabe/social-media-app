@@ -7,7 +7,7 @@ const PostList = ({
   showTitle = true,
   showUsername = true,
 }) => {
-  if (!posts) {
+  if (!posts.length) {
     return <h3>No posts Yet</h3>;
   }
 
@@ -37,7 +37,7 @@ const PostList = ({
               )}
             </h4>
             <div className="card-body bg-light p-2">
-              <p>{post.postText}</p>
+              <p>{post.postMessage}</p>
             </div>
             <Link
               className="btn btn-primary btn-block btn-squared"
