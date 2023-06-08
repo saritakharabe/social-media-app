@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import PostForm from '../components/PostsForm';
@@ -10,7 +10,7 @@ import { QUERY_USER, QUERY_ME } from '../utils/queries';
 import Auth from '../utils/auth';
 
 const Profile = () => {
-  const { username: userParam } = useParams();
+  const { username: userParam } = Auth.getProfile().data.username;
 
   const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
     variables: { username: userParam },

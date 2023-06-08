@@ -14,7 +14,7 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Header from './components/Header';
 import Footer from './components/Footer';
-
+import Singlepost from './pages/SinglePost';
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -47,6 +47,10 @@ function App() {
           <Header />
           <div className="container">
             <Routes>
+            <Route 
+                path="/"
+                element={<Home />}
+              />
               <Route 
                 path="/home"
                 element={<Home />}
@@ -64,8 +68,12 @@ function App() {
                 element={<Profile />}
               />
               <Route 
-                path="/profiles/:username" 
+                path="/profile" 
                 element={<Profile />}
+              />
+              <Route 
+                path="/posts/:postId" 
+                element={<Singlepost />}
               />
             </Routes>
           </div>
